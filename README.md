@@ -1,4 +1,4 @@
-# Frasaja
+# Frasaja [![PRs Welcome]
 
 Minikube addon that automates the build and deployment process of k8 nodes when work files are updated. 
 
