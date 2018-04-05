@@ -1,4 +1,6 @@
-Minikube Addon that automates the build and deployment process of k8 nodes when work files are updated. 
+# Frasaja
+
+Minikube addon that automates the build and deployment process of k8 nodes when work files are updated. 
 
 Steps. 
 1. Run minikube start in a terminal tab
