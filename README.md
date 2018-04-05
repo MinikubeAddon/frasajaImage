@@ -1,7 +1,10 @@
-# Frasaja &middot; ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+# Watchpod &middot; ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-Minikube addon that automates the build and deployment process of k8 nodes when work files are updated. 
+Watchpod is a minikube addon that detects file changes and automates the build and deployment process of local k8 nodes
 
+## Demo
+
+# Process 
 Steps. 
 1. Run minikube start in a terminal tab
 2. Open a seperate terminal window. Mount on working directory where files are watched by running `minikube mount /"path to files":mount-9p`
@@ -11,6 +14,12 @@ Steps.
 4. Run `minikube open frasaja` 
 5. The addon will now rebuild your application when a file in the mounted directory is changed
 
+
+
+
+
+
+# Internal 
 
 in the `main` folder...
   run `npm run build`
