@@ -1,4 +1,4 @@
-# Frasaja &middot; [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+# Frasaja &middot; ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 Minikube addon that automates the build and deployment process of k8 nodes when work files are updated. 
 
