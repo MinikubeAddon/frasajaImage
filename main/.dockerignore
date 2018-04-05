@@ -2,4 +2,6 @@ node_modules
 npm_debug.log
 deployment.yaml
 dev-server.js
-# client
+client
+.babelrc
+webpack.config.js
