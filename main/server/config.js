@@ -1,6 +1,6 @@
 const path = require('path');
-const config = require(path.join(__dirname, '../test/frasaja.json'));
-// ../frasaja.json --> gets mounted in main/test (a new directory spec'd in yaml & Dockerfile)
+const config = require(path.join(__dirname, '../test/watchpod.json'));
+// ../watchpod.json --> gets mounted in main/test (a new directory spec'd in yaml & Dockerfile)
 const YAML = require('yamljs');
 const fs = require('fs');
 
@@ -14,7 +14,7 @@ const fs = require('fs');
 // rebuild this particular docker container when this directory changes
 // may be done by parsing Dockerfiles
 
-// =================PARSE COMMAND IN FRASAJA.JSON=================
+// =================PARSE COMMAND IN WATCHPOD.JSON=================
 // gives the directory in a command an absolute path
 const fixPath = (str) => {
   let prev = '';

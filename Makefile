@@ -20,8 +20,8 @@ delete:
 .PHONY: create
 create:
 	@eval $$(minikube docker-env) ;\
-	docker build -t kubernetes-frasaja:v1 ./main
-	kubectl create -f ./main/deployment.yaml
+	docker build -t watchpod:v1 ./main
+	kubectl create -f ./main/watchpod.yaml
 
 .PHONY: build
 build:
