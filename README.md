@@ -4,7 +4,7 @@ Watchpod is a minikube addon that detects file changes, then automates the build
 
 ## Demo
 
-# Process 
+## Process 
 Steps. 
 1. Run minikube start in a terminal tab
 2. Open a seperate terminal window. Mount on working directory where files are watched by running `minikube mount /"path to files":mount-9p`
@@ -19,7 +19,7 @@ Steps.
 
 
 
-# Internal 
+## Internal 
 
 in the `main` folder...
   run `npm run build`
