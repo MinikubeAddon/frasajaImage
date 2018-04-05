@@ -32,7 +32,6 @@ class App extends React.Component{
     // else just refresh the iframe
 
     socket.on('refresh-page', (data) => {
-      console.log(data);
       this.setState((prevState) => {
         return {
           data: prevState.data.concat(data.message || [])
