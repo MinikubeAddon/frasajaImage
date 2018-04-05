@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
-    "build": "webpack",
-    "start:watch": "webpack --watch",
+    "build": "webpack&&docker build -t kubernetes-frasaja:v1 .",
+    "start:dev": "npm run build&&kubectl create -f ./deployment.yaml",
     "start:server": "nodemon server"
   },
   "author": "",
