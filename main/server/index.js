@@ -69,7 +69,7 @@ app.get('/services', (req, res, next) => {
   const labels = [];
 
   const filteredRows = rows.reduce((record, row, i) => {
-    const exposed = ['kubernetes ', 'kubernetes-frasaja ', 'ClusterIP', 'ExternalName'].reduce((bool, word) => {
+    const exposed = ['kubernetes ', 'watchpod ', 'ClusterIP', 'ExternalName'].reduce((bool, word) => {
       return bool && !row.includes(word);
     }, true);
 
