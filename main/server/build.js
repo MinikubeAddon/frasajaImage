@@ -125,7 +125,7 @@ process.on('message', (m) => {
     const setKubePromises = rebuildImages.map((image) => {
       return create(`${config[image].kubeSet}${config[image].newName}`);
     });
-    process.send({ refresh: true });
+    // process.send({ refresh: true });
     return Promise.all(setKubePromises);
   })
   .then((codes) => {
@@ -164,7 +164,7 @@ process.on('message', (m) => {
   .then((codes) => {
     // user wants to refresh iframe
     // if(frasajaJson.reload === "true"){
-      // process.send({ refresh: true });
+      process.send({ refresh: true });
     // }
   })
 })
