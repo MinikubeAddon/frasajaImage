@@ -12,7 +12,8 @@ const files = {
   'refresh-button.svg': true,
   'trash.svg': true,
   'bundle.js': true,
-  'styles.css': true
+  'styles.css': true,
+  'network.svg': true
 }
 
 // runWatch is called when the socket connects with client
