@@ -2,8 +2,15 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 // const frasajaJson = require(path.join(__dirname, '../test/frasaja.json'));
-const config = require(path.join(__dirname, './config.js'));
+const configObj = require(path.join(__dirname, './config.js'));
+
+const config = configObj.docker;
 const images = Object.keys(config);
+
+const kubeCreate = configObj.kubernetesCreate;
+const kubeDelete = configObj.kubernetesDelete;
+// const kubeConfig = configObj.kubernetes;
+// const kubeNames = Object.keys(kubeConfig);
 
 let init = false;
 let version = 1;
@@ -73,7 +80,6 @@ const create = (command, errCB=function(){}, successCB=function(){}) => {
       errCB(data);
       res += data;
       process.send({message: [data]});
-      resolve(res);
     });
 
     deploy.on('close', (code) => {
@@ -119,7 +125,8 @@ process.on('message', (m) => {
     const setKubePromises = rebuildImages.map((image) => {
       return create(`${config[image].kubeSet}${config[image].newName}`);
     });
-    return Promise.all(setKubePromises)
+    process.send({ refresh: true });
+    return Promise.all(setKubePromises);
   })
   .then((codes) => {
     // process.send({ refresh: true });
@@ -157,7 +164,7 @@ process.on('message', (m) => {
   .then((codes) => {
     // user wants to refresh iframe
     // if(frasajaJson.reload === "true"){
-      process.send({ refresh: true });
+      // process.send({ refresh: true });
     // }
   })
 })
@@ -166,14 +173,21 @@ process.on('message', (m) => {
 
 // ==========================RUN BUILD ON CONNECT=============================================
 // this is run at the very beginning to build the docker images and kubernetes clusters
+// delete old kubernetes objects
 // build docker containers
-const dockerPromises = images.map((image) => { return create(`${config[image].dockerStart} ${image} ${config[image].dockerEnd}`, ()=>{}, successDockerBuild(image)); });
+// create new kubernetes objects
+const kubeDeletePromises = kubeDelete.map((script) => { return create(script); });
 
-Promise.all(dockerPromises).then((codes) => {
+Promise.all(kubeDeletePromises).then((codes) => {
+  const dockerPromises = images.map((image) => { return create(`${config[image].dockerStart} ${image} ${config[image].dockerEnd}`, ()=>{}, successDockerBuild(image)); });
+  return Promise.all(dockerPromises);
+})
+.then((codes) => {
   // create kubernetes objects
-  const kubePromises = images.map((image) => { return create(config[image].kubeCreate); });
-  return Promise.all(kubePromises)
-}).then((codes) => {
+  const kubeCreatePromises = kubeCreate.map((script) => { return create(script); });
+  return Promise.all(kubeCreatePromises)
+})
+.then((codes) => {
   // set init to true so the on message listener knows the docker containers
   // and kubernetes objects are good to go
   init = true;
