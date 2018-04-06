@@ -1,4 +1,5 @@
 const path = require('path');
+// const config = require(path.join(__dirname, '../../test2/watchpod.json'));
 const config = require(path.join(__dirname, '../test/watchpod.json'));
 // ../watchpod.json --> gets mounted in main/test (a new directory spec'd in yaml & Dockerfile)
 const YAML = require('yamljs');
@@ -22,7 +23,8 @@ const fixPath = (str) => {
   let img = '';
 
   const terms = str.trim().split(' ').map((word, i) => {
-    if(word.includes('.') || word.includes('/')){
+    if((word.includes('.') || word.includes('/')) && !word.includes('http')){
+      // dir = path.join(__dirname, '../../test2', word);
       dir = path.join(__dirname, '../test', word);
       return dir;
     }
@@ -89,9 +91,11 @@ const search = (obj) => {
 // finds all the names of the docker containers we will be using
 // get all yaml files and correlate docker image names with kubectl statements
 const addKube = () => {
-  return config.kubernetes.reduce((obj, kub) => {
+  const kubeObj = config.kubernetes.reduce((obj, kub) => {
     const fixed = fixPath(kub);
     const dir = fixed.dir;
+
+    obj.kubernetesCreate.push(fixed.command);
 
     // read file and split by '---'
     const jsonArr = fs.readFileSync(dir, {
@@ -101,14 +105,16 @@ const addKube = () => {
     });
 
     // go through keys until we find 'containers' key
-    jsonArr.forEach((json) => {
+    jsonArr.forEach((json, i) => {
+      const kind = json.kind.toLowerCase();
+      const kubeName = json.metadata.name;
       const containers = search(json);
+
       containers.forEach((container) => {
         const name = (container.image.includes(':')) ? container.image: container.image + ":latest";
-
-        obj[name] = {
-          kubeCreate: fixed.command,
-          kubeSet: `kubectl set image ${json.kind.toLowerCase()}/${json.metadata.name} ${container.name}=`,
+        obj["docker"][name] = {
+          // kubeCreate: fixed.command,
+          kubeSet: `kubectl set image ${kind}/${kubeName} ${container.name}=`,
           dockerStart: '',
           dockerEnd: '',
           watchPath: '',
@@ -117,11 +123,27 @@ const addKube = () => {
           oldImageIDs: {}
         };
       })
-    });
 
+      obj.kubernetesDelete.push(`kubectl delete ${kind} ${kubeName}`);
+      // obj["kubernetes"][kubeName] = (i === jsonArr.length - 1) ? {
+      //   createKube: fixed.command,
+      //   deleteKube: `kubectl delete ${kind} ${kubeName}`
+      // } : {
+      //   createKube: fixed.command,
+      //   deleteKube: `kubectl delete ${kind} ${kubeName}`
+      // }
+    });
     return obj;
-  }, {})
+  }, {
+    docker: {},
+    kubernetesCreate: [],
+    kubernetesDelete: []
+  });
+
+  const docker = addDocker(kubeObj.docker);
+  kubeObj.docker = docker;
+
+  return kubeObj;
 }
 
-
-module.exports = addDocker(addKube())
+module.exports = addKube();
