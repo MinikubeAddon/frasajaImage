@@ -18,11 +18,6 @@ function send(e){
     if(e > 0 && e >= obj.event.length){
       // sends a message back to parent process in index.js
       process.send({message: obj.path, loading: true});
-
-      // obj = {
-      //   event: [],
-      //   path: [changes]
-      // };
       obj.event = [];
       obj.path = [changes];
 
@@ -33,11 +28,12 @@ function send(e){
 }
 send(0);
 
+
 const client = chokidar.watch([watchPath], {
   persistent: true,
   usePolling: true,
   interval: 500,
-  ignored: /\/usr\/src\/app\/test\/(\w+\/)*node_modules/
+  // ignored: /\/usr\/src\/app\/test\/(\w+\/)*node_modules/
 });
 
 // collects the paths and events when a file changes
@@ -47,6 +43,7 @@ client.on('all', function(event, path){
 });
 
 process.once('SIGINT', function() {  // ctrl C
+  process.send({message: ["oops"]})
   client.close();
   process.exit(0);
   console.log("SIGINT");

@@ -28,9 +28,9 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: my-service
+  name: my-service2
   labels:
-    run: my-service
+    run: my-service2
 spec:
   type: LoadBalancer
   selector:

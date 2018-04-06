@@ -11,7 +11,7 @@ const Navbar = (props) => {
   return (
     <nav id='above-iframe'>
       <ul>
-        <img src="/network.svg" />
+        <img src="/owl.png" />
         {Object.keys(paths).map((path) => (
           <li key={path}>
             <Link

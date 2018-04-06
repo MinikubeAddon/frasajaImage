@@ -46,27 +46,26 @@ const fixPath = (str) => {
   };
 }
 
+
 // ====================ADD DOCKER COMMANDS================================
 // add docker commands to the already existing kubernetes commands object
 // created by addKube()
-// containers that are spe
+// create a separate object (paths) that looks at the docker commands and Dockerfiles
+// in order to determine paths that could be impacted
 const addDocker = (build) => {
-  const result = {};
-
-  config.docker.forEach((script) => {
+  return config.docker.reduce((obj, script) => {
     const fixed = fixPath(script);
 
     if(build[fixed.img]){
       const split = fixed.command.split(fixed.img);
-
-      result[fixed.img] = Object.assign({}, build[fixed.img], {
+      obj[fixed.img] = Object.assign({}, build[fixed.img], {
         dockerStart: split[0].trim(),
-        dockerEnd: split[1].trim()
+        dockerEnd: split[1].trim(),
+        watchPath: fixed.dir.replace('/Dockerfile', '')
       });
     }
-  })
-
-  return result;
+    return obj;
+  }, {});
 }
 
 
@@ -112,6 +111,7 @@ const addKube = () => {
           kubeSet: `kubectl set image ${json.kind.toLowerCase()}/${json.metadata.name} ${container.name}=`,
           dockerStart: '',
           dockerEnd: '',
+          watchPath: '',
           newName: '',
           newImageID: '',
           oldImageIDs: {}
@@ -123,4 +123,5 @@ const addKube = () => {
   }, {})
 }
 
-module.exports = addDocker(addKube());
+
+module.exports = addDocker(addKube())
