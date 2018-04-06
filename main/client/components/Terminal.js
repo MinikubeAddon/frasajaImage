@@ -28,7 +28,7 @@ class Terminal extends React.Component {
         <div className="col-tabs">
           <h1>Terminal</h1>
           <div className="scroll">
-            <a className={(this.props.loading) ? "blue-button-locked": "blue-button"} onClick={this.props.clear}>Clear</a>
+            <a className={(this.props.loading) ? "blue-button-locked": "blue-button"} onClick={this.props.clear}>Clear <img src="/trash.svg" /> </a>
             <a className={(this.props.loading) ? "blue-button-locked": "blue-button"} onClick={(e) => { window.location.reload(true); }}>Rebuild</a>
           </div>
         </div>

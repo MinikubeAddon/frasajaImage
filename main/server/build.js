@@ -5,7 +5,6 @@ const path = require('path');
 const config = require(path.join(__dirname, './config.js'));
 const images = Object.keys(config);
 
-const imageCache = {}; // stores ids of built images
 let init = false;
 let version = 1;
 
@@ -94,19 +93,30 @@ process.on('message', (m) => {
   version++;
   const date = ":v" + version;
 
+  // see if any of the watchPaths partially match changed filePath
+  const rebuildImages = Object.keys(m.message.reduce((imageObj, filePath) => {
+    images.forEach((image) => {
+      if(filePath.includes(config[image].watchPath)){
+        imageObj[image] = true;
+      }
+    })
+    return imageObj;
+  }, {}))
+
+
   // build docker containers
   // a new set of promises have to be created since the old promises are resolved
   // every container name (key) in config object should have a ':' --> config.js adds ':latest' if a tag is not specified
   // so we just switch out the old tag for the new one
   // the new tag is then recorded in the callback in config[image].newName
-  const dockerPromises = images.map((image) => {
+  const dockerPromises = rebuildImages.map((image) => {
     const newName = image.slice(0, image.indexOf(':')) + date;
     return create(`${config[image].dockerStart} ${newName} ${config[image].dockerEnd}`, ()=>{}, successDockerBuild(image));
   });
 
   Promise.all(dockerPromises).then((codes) => {
     // reset kubernetes objects with the newName of the container
-    const setKubePromises = images.map((image) => {
+    const setKubePromises = rebuildImages.map((image) => {
       return create(`${config[image].kubeSet}${config[image].newName}`);
     });
     return Promise.all(setKubePromises)
@@ -135,7 +145,7 @@ process.on('message', (m) => {
     // delete old docker containers
     // when the docker image is successfully deleted,
     // the id is removed from config[image].oldImageIDs
-    const removeDockerImagesPromises = images.reduce((arr, image) => {
+    const removeDockerImagesPromises = rebuildImages.reduce((arr, image) => {
       const promises = Object.keys(config[image].oldImageIDs).map((oldID) => {
         const command = `docker rmi ${oldID} -f`;
         return create(command, onErrorDockerRemove(command, image, oldID), onSuccessDockerRemove(image, oldID));

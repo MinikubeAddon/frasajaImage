@@ -24,7 +24,7 @@ $orange: #DF744A;
     color: darken($orange, 10%);
   }
 
-  img {
-    width: 1em;
+  a img {
+    max-width: 1em;
   }
 }
