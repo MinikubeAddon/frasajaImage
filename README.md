@@ -6,7 +6,8 @@ in the `main` folder...
   run `npm run build`
 
 in the root directory...
-  to get started, run in separate terminal window `minikube mount /Users/.../frasajaImage/test:/mount-9p`  
+  to get started, run in separate terminal window:  
+  `minikube mount /Users/.../frasajaImage/test:/mount-9p`  
   in another terminal window run `make create`
 
 make create:  
