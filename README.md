@@ -9,7 +9,7 @@ in the root directory...
   to get started, run in separate terminal window `minikube mount /Users/.../frasajaImage/test:/mount-9p`  
   in another terminal window run `make create`
 
-make create:
+make create:  
   (1) builds frasaja's docker image  
   (2) builds test docker image  
   (3) create kubernetes deployment/service for watchpod  
