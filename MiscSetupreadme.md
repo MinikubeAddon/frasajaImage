@@ -1,6 +1,8 @@
 ## Pushing to Google Cloud and Pulling from Image 
-Guide: https://cloud.google.com/container-registry/docs/pushing-and-pulling?hl=en_US&_ga=2.220539224.-1560723890.1520280582  
 
+[GCR Registry Guide]: https://cloud.google.com/container-registry/docs/pushing-and-pulling?hl=en_US&_ga=2.220539224.-1560723890.1520280582  
+
+[GCR Registry Guide]  
 1.) Make a Google cloud platform account  
 2.) Make a docker image. Tag it  
 3.) Push into your cloud location   
