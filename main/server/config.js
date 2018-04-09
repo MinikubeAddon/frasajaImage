@@ -1,6 +1,7 @@
 const path = require('path');
 // const config = require(path.join(__dirname, '../../test2/watchpod.json'));
-const config = require(path.join(__dirname, '../test/watchpod.json'));
+const directory = require("./directory.js");
+const config = require(path.join(directory, '/watchpod.json'));
 // ../watchpod.json --> gets mounted in main/test (a new directory spec'd in yaml & Dockerfile)
 const YAML = require('yamljs');
 const fs = require('fs');
@@ -25,7 +26,7 @@ const fixPath = (str) => {
   const terms = str.trim().split(' ').map((word, i) => {
     if((word.includes('.') || word.includes('/')) && !word.includes('http')){
       // dir = path.join(__dirname, '../../test2', word);
-      dir = path.join(__dirname, '../test', word);
+      dir = path.join(directory, word);
       return dir;
     }
     if(word.includes(':')){

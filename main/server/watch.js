@@ -9,7 +9,9 @@ const obj = {
   path: [changes]
 };
 
-const watchPath = path.resolve(__dirname, '../test');
+const watchPath = require("./directory.js");
+const ignore = require(path.resolve(watchPath, 'watchpod.json')).ignore;
+// const watchPath = path.di(__dirname, '../test');
 
 // this listens until there is a larger array of paths and events
 // limits the number of calls we make to the front end
@@ -33,7 +35,7 @@ const client = chokidar.watch([watchPath], {
   persistent: true,
   usePolling: true,
   interval: 500,
-  // ignored: /\/usr\/src\/app\/test\/(\w+\/)*node_modules/
+  ignored: new RegExp(ignore)
 });
 
 // collects the paths and events when a file changes

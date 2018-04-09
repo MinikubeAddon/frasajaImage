@@ -1,5 +1,6 @@
 {
   "docker": ["docker build -t frontend:v1 ./frontend", "docker build -t backend:v1 ./backend", "docker build -t my-server:v1 ./test"],
   "kubernetes": ["kubectl create -f ./deployment.yaml", "kubectl create -f ./test/deployment.yaml"],
-  "reload": "true"
+  "reload": "true",
+  "ignore": ["./test/index.js"]
 }
