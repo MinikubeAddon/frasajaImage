@@ -11,11 +11,8 @@ delete:
 	# kubectl delete service my-service
 	# kubectl delete deployment backend-deployment
 	# kubectl delete deployment frontend-deployment
-
-
 	# kubectl delete deployment my-deployment-2
 	# kubectl delete service my-service-2
-
 
 .PHONY: create
 create:
