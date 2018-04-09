@@ -9,6 +9,7 @@ const images = Object.keys(config);
 
 const kubeCreate = configObj.kubernetesCreate;
 const kubeDelete = configObj.kubernetesDelete;
+
 // const kubeConfig = configObj.kubernetes;
 // const kubeNames = Object.keys(kubeConfig);
 

@@ -21,20 +21,19 @@ const files = {
 // creates process that run build.js and watch.js
 // fork is similar to spawn but it creates special node js process
 function runWatch(socket){
-  // socket.emit('refresh-page', {message: ["hello"]});
-  // // build.js is used to rebuild docker images
-  // // build.js sends messages to the parent about the rebuilt
-  // // docker image
+  // build.js is used to rebuild docker images
+  // build.js sends messages to the parent about the rebuilt
+  // docker image
   const buildPath = path.join(__dirname, './build.js');
   const build = fork(buildPath);
 
   build.on('message', (m) => {
     socket.emit('refresh-page', m);
   });
-  //
-  // // watch.js watches for changes in files
-  // // the watch process sends back messages on the changed files
-  // // the parent process then sends message to build.js process
+
+  // watch.js watches for changes in files
+  // the watch process sends back messages on the changed files
+  // the parent process then sends message to build.js process
   const watchPath = path.join(__dirname, './watch.js');
   const watch = fork(watchPath);
 
