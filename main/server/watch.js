@@ -35,7 +35,7 @@ const client = chokidar.watch([watchPath], {
   persistent: true,
   usePolling: true,
   interval: 500,
-  ignored: new Regex(/\/usr\/src\/app\/test\/(\w+\/)*node_modules/)
+  ignored: /\/usr\/src\/app\/test\/(\w+\/)*node_modules/
 });
 
 // collects the paths and events when a file changes
